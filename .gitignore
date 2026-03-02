@@ -1,0 +1,25 @@
+# IDE
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# Maven
+target/
+
+# Node
+node_modules/
+dist/
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Log
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
