@@ -11,7 +11,7 @@
  Target Server Version : 80041
  File Encoding         : 65001
 
- Date: 02/03/2026 23:41:18
+ Date: 03/03/2026 00:28:30
 */
 
 SET NAMES utf8mb4;
@@ -67,8 +67,6 @@ INSERT INTO `edu_course` VALUES (10, 'EN101', '综合英语(一)', 4.0, 64, 4, '
 INSERT INTO `edu_course` VALUES (11, 'EN102', '英语听力', 2.0, 32, 4, '专业必修课');
 INSERT INTO `edu_course` VALUES (12, 'EN103', '翻译理论与实践', 3.0, 48, 4, '专业核心课');
 INSERT INTO `edu_course` VALUES (13, 'GE101', '高等数学(上)', 5.0, 80, 2, '公共必修课');
-INSERT INTO `edu_course` VALUES (14, 'GE102', '大学体育', 1.0, 32, 1, '公共必修课');
-INSERT INTO `edu_course` VALUES (15, 'GE103', '马克思主义基本原理', 3.0, 48, 1, '通识必修课');
 
 -- ----------------------------
 -- Table structure for edu_course_plan
@@ -192,8 +190,7 @@ INSERT INTO `edu_score` VALUES (11, 13, 10, 85.00, 80.00, 75.00, 70.00, 74.50, N
 INSERT INTO `edu_score` VALUES (12, 1, 3, 92.00, 85.00, 90.00, 94.00, 91.20, NULL, '优秀', 4.00, 0, 1, '已结课');
 INSERT INTO `edu_score` VALUES (13, 2, 3, 88.00, 82.00, 80.00, 85.00, 83.70, NULL, '良好', 3.30, 0, 1, '已结课');
 INSERT INTO `edu_score` VALUES (14, 3, 3, 75.00, 80.00, 65.00, 70.00, 71.50, NULL, '中等', 2.20, 0, 1, '已结课');
-INSERT INTO `edu_score` VALUES (17, 1, 1, 85.00, 801.00, 75.00, 45.00, 206.20, NULL, '优秀', 4.00, 0, 1, '在修');
-INSERT INTO `edu_score` VALUES (18, 2, 1, 90.00, 88.00, 85.00, 50.00, 68.60, NULL, '及格', 2.00, 0, 1, '在修');
+INSERT INTO `edu_score` VALUES (19, 1, 4, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, 0, '在修');
 
 -- ----------------------------
 -- Table structure for edu_score_audit

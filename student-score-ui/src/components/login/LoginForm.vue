@@ -2,7 +2,7 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/store/user'
-import { getFirstMenuPath } from '@/router'
+import { addDynamicRoutes, getFirstMenuPath, setRoutesAdded } from '@/router'
 import { ElMessage } from 'element-plus'
 import { User, Lock } from '@element-plus/icons-vue'
 
@@ -43,8 +43,12 @@ const handleLogin = async () => {
       role: props.activeRole
     })
 
+    // 先注册动态路由并同步标记，再跳转，避免守卫因路由未注册而重定向回登录页
+    addDynamicRoutes(userStore.menuList)
+    setRoutesAdded()
     ElMessage.success('登录成功')
-    router.push(getFirstMenuPath(userStore.menuList))
+    const targetPath = getFirstMenuPath(userStore.menuList)
+    router.push(targetPath)
   } catch (err: any) {
     ElMessage.error(err.message || '登录失败，请检查账号密码')
   } finally {

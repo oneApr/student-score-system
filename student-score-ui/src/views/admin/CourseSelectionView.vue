@@ -24,7 +24,7 @@ const rules = {
   planId: [{ required: true, message: '请选择课程', trigger: 'blur' }]
 }
 
-// 获取学期列表
+// 获取学期列表字典
 const fetchTerms = async () => {
   try {
     const res: any = await request({
@@ -48,8 +48,10 @@ const plansOptions = ref<any[]>([])
 const fetchDictionaries = async () => {
   try {
     const [stuRes, planRes]: [any, any] = await Promise.all([
+      // 获取学生分页列表用于下拉选框
       request({ url: '/admin/user/page?pageNum=1&pageSize=9999', method: 'get' }),
-      request({ url: '/admin/plan/page?pageNum=1&pageSize=9999', method: 'get' })
+      // 获取开课计划列表用于下拉选框 (修正路径: /page -> /list)
+      request({ url: '/admin/plan/list?pageNum=1&pageSize=9999', method: 'get' })
     ])
     if (stuRes.code === 200) {
       studentsOptions.value = stuRes.data?.list || []
@@ -62,7 +64,7 @@ const fetchDictionaries = async () => {
   }
 }
 
-// 格式化学期显示
+// 格式化学期显示 (例如: 2025-2026-1 -> 2025-2026学年第一学期)
 const formatTerm = (termStr: string) => {
   if (!termStr) return ''
   const match = termStr.match(/^(\d{4})-(\d{4})-([12])$/)
@@ -215,10 +217,17 @@ onMounted(async () => {
           </el-select>
         </el-form-item>
         <el-form-item label="选择课程" prop="planId">
-          <el-select v-model="form.planId" placeholder="请选择或搜索排课计划" filterable style="width: 100%;">
+          <el-select v-model="form.planId" placeholder="请选择或搜索排课计划" filterable style="width: 100%;" fit-input-width
+            placement="bottom-start">
             <el-option v-for="plan in plansOptions" :key="plan.planId"
               :label="(plan.term || '') + ' 学期 / ' + (plan.courseName || plan.courseCode) + ' (' + plan.teacherName + ')'"
-              :value="plan.planId" />
+              :value="plan.planId">
+              <span
+                style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; max-width: 350px;">
+                {{ (plan.term || '') + ' 学期 / ' + (plan.courseName || plan.courseCode) + ' (' + plan.teacherName + ')'
+                }}
+              </span>
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="选课属性">

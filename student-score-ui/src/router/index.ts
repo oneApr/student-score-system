@@ -26,12 +26,11 @@ const loginRoute = {
     component: () => import('../views/LoginView.vue')
 }
 
-// Layout 布局路由（父路由）
+// Layout 布局路由（父路由），不设置 redirect，由路由守卫根据角色动态决定首页
 const layoutRoute = {
     path: '/',
     name: 'layout',
     component: () => import('../views/LayoutView.vue'),
-    redirect: '',
     meta: { requiresAuth: true },
     children: []
 }
@@ -140,6 +139,10 @@ export function resetRoutesAdded() {
     routesAdded = false
 }
 
+export function setRoutesAdded() {
+    routesAdded = true
+}
+
 // 路由守卫
 router.beforeEach(async (to, _from, next) => {
     const userStore = useUserStore()
@@ -161,12 +164,15 @@ router.beforeEach(async (to, _from, next) => {
     if (!userStore.userInfo) {
         try {
             const userInfo = await userStore.getUserInfo()
-            if (userInfo && userInfo.menuList) {
+            if (userInfo && userInfo.menuList && userInfo.menuList.length > 0) {
                 addDynamicRoutes(userInfo.menuList)
                 routesAdded = true
-                next({ ...to, replace: true })
+                next({ path: to.path, query: to.query, hash: to.hash, replace: true })
                 return
             }
+            // menuList 为空：直接放行，让页面显示空布局
+            next()
+            return
         } catch (error) {
             localStorage.removeItem('token')
             routesAdded = false
@@ -179,7 +185,7 @@ router.beforeEach(async (to, _from, next) => {
     if (!routesAdded && userStore.menuList.length > 0) {
         addDynamicRoutes(userStore.menuList)
         routesAdded = true
-        next({ ...to, replace: true })
+        next({ path: to.path, query: to.query, hash: to.hash, replace: true })
         return
     }
 
@@ -189,7 +195,6 @@ router.beforeEach(async (to, _from, next) => {
         next(redirectPath)
         return
     }
-
     next()
 })
 
